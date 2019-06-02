@@ -1,21 +1,16 @@
 <template>
   <div id="app">
     <Header/>
-    <!-- <router-view></router-view> -->
-    <!-- <listSW/> -->
     <test/>
   </div>
 </template>
 
 <script>
-// import listSW from "./components/listSW.vue";
-
 import test from "./components/test.vue";
 import Header from "./components/header.vue";
 
 export default {
   components: {
-    // listSW,
     test,
     Header
   }

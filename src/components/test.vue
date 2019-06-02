@@ -134,7 +134,7 @@
     <div class="list-container" v-if="!this.$store.state.isLoading">
       <ul v-if="toogle != 'films'" class="list">
         <li
-          @click="curItem(item)"
+          @click="showCurrentItem(item)"
           class="list__item"
           v-for="item in resultsList"
           :key="item.url"
@@ -144,7 +144,7 @@
       <ul class="list" v-else>
         <li
           class="list__item"
-          @click="curItem(item)"
+          @click="showCurrentItem(item)"
           v-for="item in resultsList"
           :key="item.url"
         >{{item.title}}</li>
@@ -180,6 +180,7 @@
 <script lang="ts">
 import Vue from "vue";
 import { Component } from "vue-property-decorator";
+
 @Component
 export default class App extends Vue {
   result = null;
@@ -234,19 +235,20 @@ export default class App extends Vue {
     this.currentItem = {};
   }
 
-  curItem(item: any) {
-    this.currentItem = item;
-    this.titleFilter = item.name;
+  showCurrentItem(item: any) {
+    this.titleFilter = item.name ? item.name : item.title;
+
     let blacklist = ["created", "edited", "url", "name", "homeworld", "ope"];
 
-    let test = Object.keys(item)
+    // Преобразую выбранный элемент
+    let set_obj = Object.keys(item)
       .filter(key => {
         if (blacklist.indexOf(key) !== -1) return false;
         return true;
       })
       .map(key => {
         let value = item[key];
-        const name = this.uperWordord(key.replace(/_\n/g, " "));
+        const name = this.uperWordord(key.replace(/_/g, " "));
         if (key === "opening_crawl") {
           value = item[key].slice(0, 39) + "...";
         }
@@ -256,10 +258,11 @@ export default class App extends Vue {
 
         return { name, value };
       });
-    this.currentItem = test;
+    this.currentItem = set_obj;
     this.isShow = true;
   }
 
+  // Фильтр по полу персонажа
   filterGender(value: string) {
     this.pageNumber = 0;
     let filterPeople = this.$store.state.allList.filter((item: any) => {
@@ -275,15 +278,25 @@ export default class App extends Vue {
     this.$store.commit("SET_LIST", filterPeople);
   }
 
+  // Фильтр по длине корабля
   filterLengthStarships() {
     let FilterStarships = this.$store.state.allList.filter((item: any) => {
       let itemLength = parseInt(item.length, 10);
       if (itemLength >= this.minLength && itemLength <= this.maxLength)
         return item;
     });
-    this.$store.commit("SET_LIST", FilterStarships);
+    if (
+      (typeof this.minLength === "string" &&
+        typeof this.maxLength === "string") ||
+      (this.minLength === 0 && this.maxLength === 0)
+    ) {
+      this.$store.commit("SET_LIST", this.$store.state.allList);
+    } else {
+      this.$store.commit("SET_LIST", FilterStarships);
+    }
   }
 
+  // Список который отображается на старнице
   get resultsList() {
     let start = this.pageNumber * this.size,
       end = start + this.size;

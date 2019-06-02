@@ -15,7 +15,6 @@ export const store = new Vuex.Store({
         count: null
 
     },
-    getters: {},
     mutations: {
         SET_LIST: (state, payload) => {
             state.filterList = payload;
