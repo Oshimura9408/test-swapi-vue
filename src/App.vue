@@ -1,28 +1,41 @@
 <template>
   <div id="app">
-    <img alt="Vue logo" src="./assets/logo.png">
-    <HelloWorld msg="Welcome to Your Vue.js App"/>
+    <Header/>
+    <!-- <router-view></router-view> -->
+    <!-- <listSW/> -->
+    <test/>
   </div>
 </template>
 
 <script>
-import HelloWorld from './components/HelloWorld.vue'
+// import listSW from "./components/listSW.vue";
+
+import test from "./components/test.vue";
+import Header from "./components/header.vue";
 
 export default {
-  name: 'app',
   components: {
-    HelloWorld
+    // listSW,
+    test,
+    Header
   }
-}
+};
 </script>
 
 <style>
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+a {
+  text-decoration: none;
+}
+
 #app {
-  font-family: 'Avenir', Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-  margin-top: 60px;
+  font-family: "Roboto", sans-serif;
+  font-weight: 300;
 }
 </style>
