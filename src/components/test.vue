@@ -238,7 +238,7 @@ export default class App extends Vue {
   showCurrentItem(item: any) {
     this.titleFilter = item.name ? item.name : item.title;
 
-    let blacklist = ["created", "edited", "url", "name", "homeworld", "ope"];
+    let blacklist = ["created", "edited", "url", "name", "homeworld"];
 
     // Преобразую выбранный элемент
     let set_obj = Object.keys(item)
